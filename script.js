@@ -114,8 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Supabase Dynamic Content Loading ---
     // Safe lookup of config variables from config.js
-    const sUrl = (typeof SUPABASE_URL !== 'undefined') ? SUPABASE_URL : 'https://YOUR_PROJECT_ID.supabase.co';
-    const sKey = (typeof SUPABASE_ANON_KEY !== 'undefined') ? SUPABASE_ANON_KEY : 'YOUR_ANON_KEY';
+    const sUrl = (typeof window !== 'undefined' && window.SUPABASE_URL) ? window.SUPABASE_URL : 'https://YOUR_PROJECT_ID.supabase.co';
+    const sKey = (typeof window !== 'undefined' && window.SUPABASE_ANON_KEY) ? window.SUPABASE_ANON_KEY : 'YOUR_ANON_KEY';
     
     const loadDynamicContent = async () => {
         if (sUrl === 'https://YOUR_PROJECT_ID.supabase.co' || !sUrl || !sKey) {
