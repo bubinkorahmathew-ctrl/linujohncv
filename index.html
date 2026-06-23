@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="dark-mode">
 
@@ -136,7 +138,7 @@
             </div>
 
             <!-- Current Job Card -->
-            <div class="current-job-card reveal fade-in">
+            <div class="current-job-card reveal fade-in" id="current-job-card">
                 <div class="job-header">
                     <div>
                         <h3 class="job-role">Warehouse Keeper</h3>
@@ -167,7 +169,7 @@
             </div>
 
             <!-- Vertical Animated Timeline -->
-            <div class="timeline">
+            <div class="timeline" id="experience-timeline">
                 <div class="timeline-item reveal slide-up">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -225,7 +227,7 @@
                 <div class="divider"></div>
             </div>
             <div class="skills-wrapper">
-                <div class="skills-column">
+                <div class="skills-column" id="operational-skills-column">
                     <h3 class="skills-category-title"><i class="fa-solid fa-gear"></i> Operational Expertise</h3>
                     <div class="skill-bar-wrapper">
                         <div class="skill-info"><span>SAP Business One Procurement</span><span>95%</span></div>
@@ -250,7 +252,7 @@
                 </div>
                 <div class="skills-column">
                     <h3 class="skills-category-title"><i class="fa-solid fa-list-check"></i> Key Proficiencies</h3>
-                    <div class="skill-tags">
+                    <div class="skill-tags" id="key-proficiencies-tags">
                         <span class="skill-tag">Material Transfers</span>
                         <span class="skill-tag">Documentation & Record Keeping</span>
                         <span class="skill-tag">Food Safety & Hygiene</span>
@@ -260,7 +262,7 @@
                     </div>
 
                     <h3 class="skills-category-title mt-4"><i class="fa-solid fa-laptop-code"></i> Technical Skills</h3>
-                    <div class="skill-tags tech-tags">
+                    <div class="skill-tags tech-tags" id="technical-skills-tags">
                         <span class="skill-tag outline">SAP B1</span>
                         <span class="skill-tag outline">FOODICS</span>
                         <span class="skill-tag outline">Micros</span>
@@ -325,7 +327,7 @@
                     </div>
                     
                     <h3 class="cert-title"><i class="fa-solid fa-certificate"></i> Certifications</h3>
-                    <ul class="cert-list">
+                    <ul class="cert-list" id="certifications-list">
                         <li><i class="fa-solid fa-check"></i> Forklift Operations</li>
                         <li><i class="fa-solid fa-check"></i> CDAC MS Office Certification</li>
                         <li><i class="fa-solid fa-check"></i> AutoDesk AutoCAD Certification</li>
@@ -459,6 +461,7 @@
     </div>
 
     <!-- Custom JS -->
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

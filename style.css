@@ -60,6 +60,115 @@ body.dark-mode .form-control:focus {
     border-color: var(--accent-color);
     box-shadow: 0 0 0 2px var(--accent-light);
 }
+
+/* Colorful Theme Variables - Premium Mesh & Glassmorphism */
+body.colorful-mode {
+    --primary-color: #ffffff;
+    --secondary-color: #f1f5f9;
+    --accent-color: #ff007a; /* Vibrant Pink */
+    --accent-light: rgba(255, 0, 122, 0.2);
+    --bg-color: #0b071a; /* Deep base */
+    --bg-light: #1b1242;
+    --card-bg: rgba(255, 255, 255, 0.05); /* Glass */
+    --text-color: #f8fafc;
+    --text-light: #cbd5e1;
+    --border-color: rgba(255, 255, 255, 0.1);
+    
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+body.colorful-mode {
+    background: 
+        radial-gradient(circle at 0% 0%, rgba(124, 58, 237, 0.6) 0%, transparent 40%),
+        radial-gradient(circle at 100% 0%, rgba(233, 69, 96, 0.6) 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(0, 240, 255, 0.5) 0%, transparent 40%),
+        radial-gradient(circle at 0% 100%, rgba(255, 0, 122, 0.5) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.4) 0%, transparent 60%),
+        #0b071a;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+body.colorful-mode .navbar {
+    background-color: rgba(11, 7, 26, 0.6) !important;
+    backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.colorful-mode .feature-card,
+body.colorful-mode .stat-card,
+body.colorful-mode .current-job-card,
+body.colorful-mode .timeline-content,
+body.colorful-mode .lang-card,
+body.colorful-mode .contact-card,
+body.colorful-mode .contact-form,
+body.colorful-mode .modal-content,
+body.colorful-mode .edu-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+    color: var(--text-color);
+}
+
+body.colorful-mode .feature-icon,
+body.colorful-mode .stat-icon,
+body.colorful-mode .edu-icon,
+body.colorful-mode .contact-icon {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+}
+
+body.colorful-mode .btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.colorful-mode .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--accent-color);
+}
+
+body.colorful-mode .form-control {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+}
+
+body.colorful-mode .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+body.colorful-mode .divider {
+    background: linear-gradient(90deg, var(--accent-color), #7c3aed);
+    height: 5px;
+    box-shadow: 0 0 15px var(--accent-light);
+}
+
+body.colorful-mode .progress-bar {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.colorful-mode .progress {
+    background: linear-gradient(90deg, var(--accent-color), #7c3aed);
+    box-shadow: 0 0 10px var(--accent-light);
+}
+
+body.colorful-mode .skill-tag {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+body.colorful-mode .skill-tag:hover {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
 .theme-toggle:hover {
     color: var(--accent-color) !important;
 }

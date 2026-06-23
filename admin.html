@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Linu John Portfolio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body class="admin-body">
+
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="login-overlay">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fa-solid fa-lock"></i>
+                <h2>Admin Login</h2>
+                <p>Welcome back, Linu.</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="admin@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                <p id="login-error" class="error-text"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard UI (Hidden until login) -->
+    <div id="admin-dashboard" class="admin-dashboard hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-boxes-packing"></i>
+                <span>Admin Panel</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-tab="profile-tab">
+                    <i class="fa-solid fa-user"></i> Profile Info
+                </a>
+                <a href="#" class="nav-item" data-tab="experience-tab">
+                    <i class="fa-solid fa-briefcase"></i> Experience
+                </a>
+                <a href="#" class="nav-item" data-tab="skills-tab">
+                    <i class="fa-solid fa-gears"></i> Skills
+                </a>
+                <a href="#" class="nav-item" data-tab="files-tab">
+                    <i class="fa-solid fa-file-arrow-up"></i> Files & CV
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn btn-outline btn-block">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1 id="tab-title">Profile Information</h1>
+                <div class="header-actions">
+                    <span id="save-status" class="status-msg"></span>
+                    <button class="btn btn-primary save-general-btn">Save Changes</button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- Profile Tab -->
+                <section id="profile-tab" class="tab-pane active">
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>General Information</h3>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="prof-name" class="form-control" placeholder="Linu John">
+                            </div>
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" id="prof-title" class="form-control" placeholder="Procurement Professional">
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="prof-location" class="form-control" placeholder="Jeddah, KSA">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="prof-email" class="form-control" placeholder="linujohn@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Numbers (comma separated)</label>
+                                <input type="text" id="prof-phone" class="form-control" placeholder="+966 510381936, +966 53 482 9283">
+                            </div>
+                            <div class="form-group">
+                                <label>LinkedIn URL</label>
+                                <input type="url" id="prof-linkedin" class="form-control" placeholder="https://linkedin.com/in/linu-john">
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>About Me</h3>
+                            <div class="form-group">
+                                <label>Bio Text</label>
+                                <textarea id="prof-about" class="form-control" rows="8"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Experience Tab -->
+                <section id="experience-tab" class="tab-pane">
+                    <div class="header-with-btn">
+                        <h3>Work History</h3>
+                        <button class="btn btn-sm btn-primary" id="add-exp-btn"><i class="fa-solid fa-plus"></i> Add Role</button>
+                    </div>
+                    <div id="experience-list" class="item-list">
+                        <!-- Experience items will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Skills Tab -->
+                <section id="skills-tab" class="tab-pane">
+                    <div class="header-with-btn">
+                        <h3>Core Competencies</h3>
+                        <button class="btn btn-sm btn-primary" id="add-skill-btn"><i class="fa-solid fa-plus"></i> Add Skill</button>
+                    </div>
+                    <div id="skills-list" class="grid-3">
+                        <!-- Skill items will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Files Tab -->
+                <section id="files-tab" class="tab-pane">
+                    <div class="card">
+                        <h3>Document Management</h3>
+                        <div class="file-upload-section">
+                            <div class="file-box">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                <h4>Main Resume (CV)</h4>
+                                <p id="cv-filename">No file uploaded</p>
+                                <input type="file" id="cv-upload" class="hidden" accept=".pdf">
+                                <label for="cv-upload" class="btn btn-secondary">Choose PDF</label>
+                                <button class="btn btn-primary" id="upload-cv-confirm">Upload Now</button>
+                            </div>
+                            <div class="file-box">
+                                <i class="fa-solid fa-certificate"></i>
+                                <h4>New Certificate</h4>
+                                <input type="text" id="cert-name" class="form-control mb-2" placeholder="Certificate Name" required>
+                                <input type="text" id="cert-issuer" class="form-control mb-2" placeholder="Issuer (e.g. CDAC, Calicut University)">
+                                <input type="file" id="cert-upload" class="hidden" accept=".pdf,.jpg,.png">
+                                <label for="cert-upload" class="btn btn-secondary">Choose File</label>
+                                <button class="btn btn-primary" id="upload-cert-confirm">Save Certificate</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top: 30px;">
+                        <h3>Uploaded Certificates</h3>
+                        <div id="certificates-list" class="item-list">
+                            <!-- Certificates list will be injected here -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modal-container">
+        <!-- Experience Modal -->
+        <div id="experience-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 id="exp-modal-title">Add Work Experience</h3>
+                    <button type="button" class="modal-close-btn" onclick="closeExperienceModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="experience-form">
+                    <input type="hidden" id="exp-id">
+                    <div class="form-group">
+                        <label for="exp-role">Role / Job Title</label>
+                        <input type="text" id="exp-role" class="form-control" placeholder="e.g. Warehouse Keeper" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-company">Company</label>
+                        <input type="text" id="exp-company" class="form-control" placeholder="e.g. Sign Burger" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-location">Location</label>
+                        <input type="text" id="exp-location" class="form-control" placeholder="e.g. Jeddah, KSA">
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-dates">Dates / Duration</label>
+                        <input type="text" id="exp-dates" class="form-control" placeholder="e.g. May 2025 – Present" required>
+                    </div>
+                    <div class="form-group checkbox-group" style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+                        <input type="checkbox" id="exp-current" style="width:18px; height:18px; cursor:pointer;">
+                        <label for="exp-current" style="margin-bottom:0; cursor:pointer; font-weight:normal; color:var(--admin-text);">Current Job</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-order">Order Index (Sort Order)</label>
+                        <input type="number" id="exp-order" class="form-control" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="exp-responsibilities">Responsibilities (One per line)</label>
+                        <textarea id="exp-responsibilities" class="form-control" rows="5" placeholder="Managed end-to-end procurement activities...&#10;Controlled inventory using FIFO/FEFO..."></textarea>
+                    </div>
+                    <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:15px; margin-top:20px;">
+                        <button type="button" class="btn btn-secondary" onclick="closeExperienceModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Role</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Skill Modal -->
+        <div id="skill-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3 id="skill-modal-title">Add Skill / Competency</h3>
+                    <button type="button" class="modal-close-btn" onclick="closeSkillModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="skill-form">
+                    <input type="hidden" id="skill-id">
+                    <div class="form-group">
+                        <label for="skill-name">Skill Name</label>
+                        <input type="text" id="skill-name" class="form-control" placeholder="e.g. SAP Business One" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="skill-level">Proficiency Level (%)</label>
+                        <input type="number" id="skill-level" class="form-control" min="0" max="100" value="80" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="skill-category">Category</label>
+                        <select id="skill-category" class="form-control" required style="background:var(--admin-sidebar); color:white; border:1px solid var(--admin-border); height: auto; padding: 12px 16px;">
+                            <option value="operational">Operational Expertise (Progress Bar)</option>
+                            <option value="tag">Key Proficiency (Solid Tag)</option>
+                            <option value="technical">Technical Skill (Outline Tag)</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:15px; margin-top:20px;">
+                        <button type="button" class="btn btn-secondary" onclick="closeSkillModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Skill</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
