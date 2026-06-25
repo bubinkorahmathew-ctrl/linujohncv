@@ -34,6 +34,64 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                 <p id="login-error" class="error-text"></p>
+                <div style="text-align:center; margin-top: 16px;">
+                    <a href="#" id="forgot-password-link" style="color: var(--admin-text-dim); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                       onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='var(--admin-text-dim)'">
+                        <i class="fa-solid fa-key" style="margin-right: 6px;"></i>Forgot Password?
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Panel -->
+    <div id="forgot-password-overlay" class="login-overlay hidden">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fa-solid fa-envelope-open-text" style="color: #6366f1;"></i>
+                <h2>Reset Password</h2>
+                <p>Enter your admin email to receive a reset link.</p>
+            </div>
+            <form id="forgot-password-form">
+                <div class="form-group">
+                    <label for="reset-email">Email Address</label>
+                    <input type="email" id="reset-email" class="form-control" placeholder="admin@example.com" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fa-solid fa-paper-plane"></i> Send Reset Link
+                </button>
+                <p id="reset-status" class="error-text" style="text-align:center; margin-top:12px;"></p>
+                <div style="text-align:center; margin-top: 16px;">
+                    <a href="#" id="back-to-login-link" style="color: var(--admin-text-dim); font-size: 0.875rem; text-decoration: none; transition: color 0.2s;"
+                       onmouseover="this.style.color='#6366f1'" onmouseout="this.style.color='var(--admin-text-dim)'">
+                        <i class="fa-solid fa-arrow-left" style="margin-right: 6px;"></i>Back to Login
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Set New Password Panel (shown after clicking email reset link) -->
+    <div id="new-password-overlay" class="login-overlay hidden">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fa-solid fa-shield-halved" style="color: #10b981;"></i>
+                <h2>Set New Password</h2>
+                <p>Choose a strong new password for your account.</p>
+            </div>
+            <form id="new-password-form">
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" class="form-control" placeholder="Min. 8 characters" required minlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password" id="confirm-password" class="form-control" placeholder="Repeat your password" required minlength="8">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fa-solid fa-lock"></i> Update Password
+                </button>
+                <p id="new-password-status" class="error-text" style="text-align:center; margin-top:12px;"></p>
             </form>
         </div>
     </div>

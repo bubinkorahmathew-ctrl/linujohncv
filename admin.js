@@ -104,6 +104,121 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Forgot Password Flow ---
+    const forgotPasswordOverlay = document.getElementById('forgot-password-overlay');
+    const newPasswordOverlay = document.getElementById('new-password-overlay');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const backToLoginLink = document.getElementById('back-to-login-link');
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    const newPasswordForm = document.getElementById('new-password-form');
+    const resetStatus = document.getElementById('reset-status');
+    const newPasswordStatus = document.getElementById('new-password-status');
+
+    // Hide all panels helper
+    const hideAllPanels = () => {
+        loginOverlay.classList.add('hidden');
+        forgotPasswordOverlay.classList.add('hidden');
+        newPasswordOverlay.classList.add('hidden');
+        adminDashboard.classList.add('hidden');
+    };
+
+    // Show forgot password panel
+    forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        hideAllPanels();
+        forgotPasswordOverlay.classList.remove('hidden');
+        resetStatus.innerText = '';
+    });
+
+    // Back to login from forgot password
+    backToLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        hideAllPanels();
+        loginOverlay.classList.remove('hidden');
+    });
+
+    // Send reset email
+    forgotPasswordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!supabaseClient) {
+            resetStatus.innerText = 'Supabase is not configured.';
+            resetStatus.style.color = '#ef4444';
+            return;
+        }
+        const email = document.getElementById('reset-email').value.trim();
+        resetStatus.innerText = 'Sending reset link...';
+        resetStatus.style.color = '#10b981';
+
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.href  // redirects back to admin page after clicking email link
+        });
+
+        if (error) {
+            resetStatus.innerText = 'Error: ' + error.message;
+            resetStatus.style.color = '#ef4444';
+        } else {
+            resetStatus.innerText = '✅ Reset link sent! Check your email inbox.';
+            resetStatus.style.color = '#10b981';
+            document.getElementById('reset-email').value = '';
+        }
+    });
+
+    // Set new password form
+    newPasswordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!supabaseClient) return;
+
+        const newPass = document.getElementById('new-password').value;
+        const confirmPass = document.getElementById('confirm-password').value;
+
+        if (newPass !== confirmPass) {
+            newPasswordStatus.innerText = '❌ Passwords do not match. Please try again.';
+            newPasswordStatus.style.color = '#ef4444';
+            return;
+        }
+        if (newPass.length < 8) {
+            newPasswordStatus.innerText = '❌ Password must be at least 8 characters.';
+            newPasswordStatus.style.color = '#ef4444';
+            return;
+        }
+
+        newPasswordStatus.innerText = 'Updating password...';
+        newPasswordStatus.style.color = '#10b981';
+
+        const { error } = await supabaseClient.auth.updateUser({ password: newPass });
+
+        if (error) {
+            newPasswordStatus.innerText = 'Error: ' + error.message;
+            newPasswordStatus.style.color = '#ef4444';
+        } else {
+            newPasswordStatus.innerText = '✅ Password updated successfully! Redirecting to login...';
+            newPasswordStatus.style.color = '#10b981';
+            setTimeout(() => {
+                // Clear hash from URL and redirect to login
+                window.history.replaceState(null, '', window.location.pathname);
+                hideAllPanels();
+                loginOverlay.classList.remove('hidden');
+            }, 2500);
+        }
+    });
+
+    // --- Detect Password Reset Token in URL ---
+    // When a user clicks the email reset link, Supabase redirects back with #access_token in the URL
+    const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+    const accessToken = hashParams.get('access_token');
+    const tokenType = hashParams.get('type');
+
+    if (accessToken && tokenType === 'recovery') {
+        // Set the session using the token from the URL
+        supabaseClient.auth.setSession({
+            access_token: accessToken,
+            refresh_token: hashParams.get('refresh_token') || ''
+        }).then(() => {
+            hideAllPanels();
+            newPasswordOverlay.classList.remove('hidden');
+        });
+    }
+
     logoutBtn.addEventListener('click', async () => {
         if (supabaseClient) {
             await supabaseClient.auth.signOut();
